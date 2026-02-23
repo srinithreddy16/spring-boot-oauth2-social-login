@@ -34,7 +34,9 @@ Before you begin, ensure you have the following installed:
 
 2. Configure OAuth2 credentials (see sections below)
 
-3. Set up environment variables
+3. Set up environment variables (see [Environment Variables](#environment-variables) section)
+   - A `.env` file template is provided in the project root
+   - Replace the dummy values with your actual OAuth2 credentials
 
 4. Run the application
 
@@ -157,7 +159,32 @@ Fill in the application details:
 
 This application uses environment variables to securely store OAuth2 credentials. You have several options to set them:
 
-### Option 1: System Environment Variables (Recommended for Development)
+### Option 1: Using .env File (Recommended for Local Development)
+
+A `.env` file template is provided in the project root with dummy values. To use it:
+
+1. Open the `.env` file in the project root
+2. Replace the dummy values with your actual OAuth2 credentials:
+   ```env
+   GOOGLE_CLIENT_ID=your-actual-google-client-id
+   GOOGLE_CLIENT_SECRET=your-actual-google-client-secret
+   GITHUB_CLIENT_ID=your-actual-github-client-id
+   GITHUB_CLIENT_SECRET=your-actual-github-client-secret
+   ```
+
+**Note:** Spring Boot doesn't automatically load `.env` files. You have two options:
+
+**Option A: Use a dotenv library (Recommended)**
+- Add `io.github.cdimascio:dotenv-java` dependency to your `pom.xml`
+- The library will automatically load the `.env` file
+
+**Option B: Manually load environment variables**
+- Use the `.env` file as a reference
+- Set the environment variables in your system or IDE (see Option 2 below)
+
+**⚠️ Important:** The `.env` file is already in `.gitignore` to prevent committing credentials to version control.
+
+### Option 2: System Environment Variables
 
 **Windows (PowerShell):**
 ```powershell
@@ -183,7 +210,7 @@ export GITHUB_CLIENT_ID="your-github-client-id"
 export GITHUB_CLIENT_SECRET="your-github-client-secret"
 ```
 
-### Option 2: IDE Configuration
+### Option 3: IDE Configuration
 
 If you're using an IDE like IntelliJ IDEA or Eclipse:
 
@@ -204,7 +231,7 @@ If you're using an IDE like IntelliJ IDEA or Eclipse:
    - Go to the **Environment** tab
    - Add the environment variables
 
-### Option 3: Application Properties (Not Recommended for Production)
+### Option 4: Application Properties (Not Recommended for Production)
 
 For local development only, you can directly edit `src/main/resources/application.properties`:
 
@@ -278,6 +305,8 @@ SpringOauth2/
 │   │       └── templates/                         # Thymeleaf templates (if used)
 │   └── test/
 │       └── java/                                  # Test classes
+├── .env                                           # Environment variables (not committed to git)
+├── .gitignore                                     # Git ignore rules
 ├── pom.xml                                        # Maven dependencies
 ├── mvnw                                           # Maven wrapper (Unix)
 ├── mvnw.cmd                                       # Maven wrapper (Windows)
@@ -316,8 +345,9 @@ SpringOauth2/
 
 3. **Application won't start:**
    - Ensure Java 21 is installed and configured
-   - Check that all environment variables are set
+   - Check that all environment variables are set (verify your `.env` file or system environment variables)
    - Verify Maven dependencies are downloaded
+   - If using `.env` file, ensure you've replaced dummy values with actual credentials
 
 4. **OAuth consent screen issues (Google):**
    - Ensure the OAuth consent screen is properly configured
